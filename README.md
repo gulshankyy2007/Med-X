@@ -1,34 +1,59 @@
 # Med-X
 
-**Med-X** is a medical blood-report analysis platform under development.
+**Med-X** is a medical blood-report analysis platform currently under development.
 
-The project is being developed as a structured platform for handling blood-report information and presenting medically meaningful information to patients and healthcare professionals.
+The project is being built as a research-driven healthcare platform for organizing blood-report information, preserving medically meaningful observations, and presenting health information to patients and healthcare professionals.
 
-> **Current status:** The repository currently contains the working web foundation, authentication flow, role-oriented UI, and mock Med-X data. Blood-report extraction, persistent medical data storage, and AI/ML analysis are planned future layers and are not yet implemented.
+> **Current status:** Med-X currently contains the working web foundation, role-oriented interfaces, Google OAuth authentication, and mock application data. Automated blood-report extraction, persistent medical-data storage, longitudinal report handling, and AI/ML analysis are planned future layers.
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Current Status](#current-status)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Environment Configuration](#environment-configuration)
+- [Running the Application](#running-the-application)
+- [Verifying the Backend](#verifying-the-backend)
+- [Authentication](#authentication)
+- [Application Routes](#application-routes)
+- [Medical Research Foundation](#medical-research-foundation)
+- [Security](#security)
+- [Current Limitations](#current-limitations)
+- [Development Principles](#development-principles)
+- [Future Direction](#future-direction)
+- [License](#license)
+- [Project Status](#project-status)
 
 ---
 
 ## Overview
 
-Med-X is being developed around a research-driven understanding of blood-report components and their medical interpretation.
+Med-X is being developed around a structured understanding of blood-report components, their biological meaning, relationships, and interpretation boundaries.
 
-The current application provides the web foundation required for the platform, including:
+The current application provides the web foundation for the broader platform.
 
-- Patient-oriented dashboard
+### Current application areas
+
+- Patient dashboard
 - Healthcare-professional dashboard
-- Blood-report UI
-- Health information UI
-- Monitoring UI
-- Alerts UI
-- Medicines UI
-- Devices UI
-- Ask Med-X UI
-- Profile UI
+- Blood reports
+- Health information
+- Monitoring
+- Alerts
+- Medicines
+- Devices
+- Ask Med-X
+- Profile
 - Google OAuth authentication
 - Role-oriented navigation
-- Mock data for current frontend development
+- Mock Med-X data
 
-The medical research and blood-report scope are maintained separately from the current implementation layer.
+The medical research and blood-report specifications are maintained separately from the application implementation.
 
 ---
 
@@ -40,16 +65,21 @@ The medical research and blood-report scope are maintained separately from the c
 | Patient-oriented UI | Implemented |
 | Professional-oriented UI | Implemented |
 | Google OAuth | Implemented |
-| JWT-based authentication flow | Implemented |
+| JWT/session authentication foundation | Implemented |
 | Blood-report UI | Implemented with mock data |
-| Health / monitoring / alerts UI | Implemented with current mock data |
-| Medical report extraction | Planned |
+| Health UI | Implemented with mock data |
+| Monitoring UI | Implemented with mock data |
+| Alerts UI | Implemented with mock data |
+| Medicines UI | Implemented with mock data |
+| Devices UI | Implemented with mock data |
+| Ask Med-X UI | Implemented with mock data |
+| Automated blood-report extraction | Planned |
 | Persistent medical database | Planned |
 | Longitudinal report history | Planned |
 | AI/ML analysis | Planned |
 | Dedicated AI service | Planned |
 
-The current repository should therefore be understood as the **web foundation of Med-X**, not as the completed medical-analysis system.
+The repository should therefore be understood as the **current Med-X web foundation**, not as the completed medical-analysis system.
 
 ---
 
@@ -60,7 +90,8 @@ The current repository should therefore be understood as the **web foundation of
 - React 18
 - React Router 6
 - Axios
-- Create React App / `react-scripts`
+- Create React App
+- `react-scripts`
 
 ### Backend
 
@@ -75,23 +106,25 @@ The current repository should therefore be understood as the **web foundation of
 
 ### Planned Future Layers
 
-The broader Med-X development plan includes:
+The broader Med-X system is expected to introduce additional layers such as:
 
-- Persistent medical data storage
+- Structured blood-report ingestion
 - Blood-report data extraction
+- Persistent medical-data storage
 - Longitudinal report handling
-- Python-based AI services
+- Python-based services
 - FastAPI
 - AI/ML analysis
 
-These components are **not currently implemented in this repository**.
+These layers are **not currently implemented** in this repository.
 
 ---
 
-## Repository Structure
+## Project Structure
 
 ```text
 Med-X/
+│
 ├── backend/
 │   ├── .env.example
 │   ├── package.json
@@ -106,7 +139,15 @@ Med-X/
 ├── src/
 │   ├── assets/
 │   ├── components/
+│   │   ├── Breadcrumb.js
+│   │   ├── Breadcrumbs.js
+│   │   ├── Footer.js
+│   │   ├── Modal.js
+│   │   └── Navbar.js
+│   │
 │   ├── context/
+│   │   └── AuthContext.js
+│   │
 │   ├── features/
 │   │   ├── ai/
 │   │   ├── alerts/
@@ -118,47 +159,76 @@ Med-X/
 │   │   ├── professional/
 │   │   ├── profile/
 │   │   └── reports/
+│   │
 │   ├── mock/
+│   │   └── medxData.js
+│   │
 │   └── pages/
+│       ├── AuthCallback.js
+│       ├── Login.js
+│       └── Register.js
 │
 ├── .env.example
 ├── .gitignore
 ├── package.json
 ├── package-lock.json
 └── README.md
-```
+Getting Started
 Prerequisites
 
-Install the following before running the project:
+Install the following before starting:
 
 Node.js
 npm
 Git
 
-The repository's package files are the authoritative source for the JavaScript dependency versions.
+Check that they are available:
 
+node --version
+npm --version
+git --version
+
+The repository's package.json and lock files are the authoritative source for the JavaScript dependency versions.
+
+Clone the Repository
+
+Clone the repository and enter the project directory:
+
+git clone https://github.com/gulshankyy2007/Med-X.git
+cd Med-X
+
+The repository currently uses the feature/medx-ui branch for the active Med-X implementation.
+
+To explicitly check it out:
+
+git checkout feature/medx-ui
 Environment Configuration
-Frontend
 
-Create a local .env file in the repository root based on .env.example.
+Med-X uses separate environment configuration for the frontend and backend.
 
-Example:
+Never commit real .env files or secret values.
+
+1. Frontend Environment
+
+From the project root:
+
+cp .env.example .env
+
+The root .env.example contains the frontend configuration.
+
+Expected local configuration:
 
 REACT_APP_API_URL=http://localhost:5000/api
 REACT_APP_OAUTH_URL=http://localhost:5000
-Backend
+2. Backend Environment
 
-Create:
+Create the backend environment file:
 
-backend/.env
+cp backend/.env.example backend/.env
 
-using:
+The backend environment contains configuration for:
 
-backend/.env.example
-
-The backend requires configuration for:
-
-Port
+Server port
 Frontend URL
 Session secret
 JWT secret
@@ -166,71 +236,98 @@ Google OAuth client ID
 Google OAuth client secret
 Google OAuth callback URL
 
-Never commit real .env files or secret values.
+The actual secret values must be supplied locally.
+
+Do not place credentials directly into source files.
 
 Installation
 
-Clone the repository and enter its directory:
-
-git clone <repository-url>
-cd <repository-directory>
-
-Install frontend dependencies:
+Install frontend dependencies from the project root:
 
 npm install
 
-Install backend dependencies:
+Then install backend dependencies:
 
 cd backend
 npm install
 cd ..
 
-Configure the required environment files before starting authentication-dependent functionality.
+At this point the project dependencies are installed.
 
-Running the Frontend
+Running the Application
 
-From the repository root:
+The frontend and backend run as separate processes.
 
-npm start
+You should use two terminal windows.
 
-The Create React App development server normally runs at:
+Terminal 1 — Start the Backend
 
-http://localhost:3000
-Running the Backend
-
-Open a terminal in the repository root:
+From the project root:
 
 cd backend
 npm start
 
-The backend normally runs at:
+The backend normally starts at:
 
 http://localhost:5000
 
-For development with nodemon:
+For development with automatic restart:
 
+cd backend
 npm run dev
-Backend Health Check
+Terminal 2 — Start the Frontend
 
-The backend exposes:
+From the project root:
+
+npm start
+
+The React development server normally starts at:
+
+http://localhost:3000
+
+Open the application in your browser:
+
+http://localhost:3000
+
+Verifying the Backend
+
+The backend exposes a health endpoint:
 
 GET /health
 
-A successful local health check returns:
+With the backend running, execute:
+
+curl http://localhost:5000/health
+
+A successful response should look like:
 
 {
   "ok": true
 }
+
+This confirms that the Express backend is running.
+
 Authentication
 
-The current authentication implementation uses Google OAuth through Passport.
+The current authentication foundation uses Google OAuth through Passport.
 
-The local Google OAuth callback is:
+Google OAuth flow
+
+The backend OAuth entry point is:
+
+http://localhost:5000/auth/google
+
+The configured local callback URL is:
 
 http://localhost:5000/auth/google/callback
 
-The backend authentication endpoints currently include:
+The Google OAuth credentials must be configured in:
 
+backend/.env
+
+The callback URL configured in the Google Cloud credentials must match the backend callback URL exactly.
+
+Current authentication endpoints
 GET  /auth/google
 GET  /auth/google/callback
 GET  /auth/me
@@ -239,12 +336,15 @@ POST /auth/login
 POST /auth/register
 PUT  /auth/updateprofile
 
-The email/password login, registration, and profile-update endpoints currently contain placeholder/not-implemented behavior where applicable. They should not be considered fully implemented authentication functionality.
+The email/password login, registration, and profile-update endpoints currently contain placeholder/not-implemented behavior where applicable.
+
+They should not be considered production-ready authentication functionality.
 
 Application Routes
 
-The current frontend routes include:
+The current frontend application includes the following routes.
 
+General
 /
  /dashboard
  /health
@@ -256,47 +356,56 @@ The current frontend routes include:
  /ask-medx
  /profile
  /reports/:id
-
- /professional
- /professional/patients
- /professional/reports
- /professional/monitoring
- /professional/alerts
- /professional/ask-medx
-
- /login
- /register
- /auth/callback
+Healthcare Professional
+/professional
+/professional/patients
+/professional/reports
+/professional/monitoring
+/professional/alerts
+/professional/ask-medx
+Authentication
+/login
+/register
+/auth/callback
 Medical Research Foundation
 
-The implementation is being developed from a separate research and specification process covering blood-report components, their biological meaning, relationships, interpretation boundaries, and extraction requirements.
+The Med-X implementation is being developed from a separate research and specification process covering:
+
+Blood-report components
+Biological meaning
+Component relationships
+Interpretation boundaries
+Report information requirements
+Extraction requirements
 
 The research establishes what Med-X needs to understand and preserve from blood-report information.
 
 The implementation repository should not be treated as the source of truth for the medical research scope.
 
-Likewise, future implementation work must follow the established research and specification documents rather than inventing medical interpretation rules independently.
+Future implementation work must follow the established research and specification documents rather than independently inventing medical interpretation rules.
 
 Security
 
-This project handles a domain involving potentially sensitive healthcare information.
+Med-X operates in a domain involving potentially sensitive healthcare information.
 
 Development rules include:
 
 Never commit .env files.
-Never commit real OAuth secrets.
+Never commit real OAuth credentials.
 Never commit JWT or session secrets.
-Never place credentials in source code.
-Never commit real patient records or sensitive healthcare data.
+Never place credentials directly in source code.
+Never commit real patient records.
+Never commit sensitive healthcare information.
 Use synthetic/non-sensitive data during development.
-Keep local database data and generated artifacts out of version control.
-Rotate credentials if they are accidentally exposed.
+Keep local database data outside version control.
+Keep generated artifacts outside version control.
+Rotate credentials immediately if they are accidentally exposed.
 
-The repository includes example environment files containing placeholders only.
+Example environment files contain placeholders only.
 
 Current Limitations
 
-The current repository is a web foundation and prototype-stage implementation.
+The current repository is a development-stage web foundation.
 
 It does not currently provide:
 
@@ -304,7 +413,7 @@ Automated blood-report OCR
 Automated blood-report extraction
 Production medical interpretation
 Persistent medical-record storage
-Longitudinal patient history storage
+Longitudinal patient-history storage
 Production AI/ML analysis
 A dedicated production AI service
 Production-grade clinical decision support
@@ -313,33 +422,55 @@ These capabilities belong to future development stages.
 
 Development Principles
 
-Med-X development follows these principles:
+Med-X development follows several principles.
 
-Research before implementation
+1. Research before implementation
+
 Medical behavior should follow the established research and specifications.
-Preserve medical meaning
+
+2. Preserve medical meaning
+
 Blood-report observations must retain the information necessary for later interpretation.
-Separate research from implementation
+
+3. Separate research from implementation
+
 Research scope and implementation decisions should remain independently traceable.
-Do not invent medical conclusions
-The application should not claim medical conclusions that are not supported by the established specifications.
-Protect sensitive information
+
+4. Do not invent medical conclusions
+
+The application should not claim medical conclusions that are unsupported by the established specifications.
+
+5. Protect sensitive information
+
 Secrets and healthcare data must remain outside version control.
-Prefer controlled changes
-Repository changes should be focused and traceable rather than introducing unrelated refactoring.
+
+6. Prefer controlled changes
+
+Repository changes should be focused, traceable, and aligned with the current project scope.
+
 Future Direction
 
-The current web foundation will eventually connect with the broader Med-X system, including:
+The current web foundation will eventually connect with the broader Med-X system.
 
-Structured blood-report ingestion
-Blood-report component extraction
-Persistent medical data
-Longitudinal report handling
+Planned future layers include:
+
+Blood-report ingestion
+        ↓
+Report/component extraction
+        ↓
+Structured medical data
+        ↓
+Persistent medical storage
+        ↓
+Longitudinal report history
+        ↓
 Medical information relationships
+        ↓
 AI-assisted analysis
+        ↓
 Dedicated AI services
 
-Those layers will be introduced according to the project's established research, specifications, and implementation contracts.
+These layers will be introduced according to the project's established research, specifications, and implementation contracts.
 
 License
 
@@ -349,4 +480,17 @@ Project Status
 
 Med-X is an active development project.
 
-The current repository should be considered a development-stage web foundation and should not be represented as a completed clinical or diagnostic system.
+The current repository represents the web foundation and prototype-stage implementation of the broader Med-X platform.
+
+It should not be represented as a completed clinical, diagnostic, or production medical-analysis system.
+
+Development Branch
+
+The current active implementation is maintained on:
+
+feature/medx-ui
+Repository
+
+GitHub:
+
+https://github.com/gulshankyy2007/Med-X
