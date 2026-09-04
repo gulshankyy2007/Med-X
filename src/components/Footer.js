@@ -15,23 +15,24 @@ const Footer = () => {
         </div>
 
         <div className="footer-section">
-          <h4>Med-X</h4>
+          <h4>Platform</h4>
+          <a href="/#features">Problem Areas</a>
+          <a href="/#coverage">What Med-X Offers</a>
+          <a href="/#how-it-works">How It Works</a>
+          <a href="/#contact">Contact & Inquiry</a>
+        </div>
+
+        <div className="footer-section">
+          <h4>Features</h4>
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/health">My Health</Link>
           <Link to="/reports">Reports</Link>
           <Link to="/monitoring">Monitoring</Link>
-        </div>
-
-        <div className="footer-section">
-          <h4>Health</h4>
-          <Link to="/alerts">Alerts</Link>
-          <Link to="/medicines">Medicines</Link>
           <Link to="/devices">Devices</Link>
-          <Link to="/ask-medx">Ask Med-X</Link>
         </div>
 
         <div className="footer-section">
-          <h4>Med-X</h4>
+          <h4>Account</h4>
           <Link to="/profile">Profile & Settings</Link>
           <Link to="/login">Sign In</Link>
           <Link to="/register">Create Account</Link>

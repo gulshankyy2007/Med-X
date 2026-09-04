@@ -21,6 +21,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AuthCallback from "./pages/AuthCallback";
 
+import LandingPage from "./features/landing/LandingPage";
 import Dashboard from "./features/dashboard/Dashboard";
 import Health from "./features/health/Health";
 import Reports from "./features/reports/Reports";
@@ -79,20 +80,13 @@ function App() {
 
       <main>
         <Routes>
-          {/* Public */}
+          {/* Public Landing Page */}
+          <Route path="/" element={<LandingPage />} />
+
+          {/* Public Auth */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/auth/callback" element={<AuthCallbackHandler />} />
-
-          {/* Med-X */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
 
           <Route
             path="/dashboard"

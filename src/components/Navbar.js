@@ -17,6 +17,8 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [avatarError, setAvatarError] = useState(false);
 
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+
   /*
    * The OAuth-selected workspace is retained in sessionStorage.
    * This is useful during the current UI/mockup phase because
@@ -29,9 +31,12 @@ const Navbar = () => {
     isOrganization ||
     selectedWorkspace === 'organization';
 
+  const isLandingPage = location.pathname === '/';
+
   useEffect(() => {
     setAvatarError(false);
     setShowDropdown(false);
+    setShowMobileMenu(false);
   }, [user?.profilePicture, location.pathname]);
 
   const handleLogout = async () => {
@@ -39,6 +44,18 @@ const Navbar = () => {
     await logout();
     navigate('/login');
     setShowDropdown(false);
+  };
+
+  const scrollToLandingSection = (sectionId) => {
+    setShowMobileMenu(false);
+    if (isLandingPage) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate(`/#${sectionId}`);
+    }
   };
 
   /*
@@ -65,10 +82,16 @@ const Navbar = () => {
         { path: '/ask-medx', label: 'Ask Med-X' }
       ];
 
+  const landingNavItems = [
+    { id: 'features', label: 'Features' },
+    { id: 'coverage', label: 'Coverage' },
+    { id: 'how-it-works', label: 'How It Works' },
+    { id: 'contact', label: 'Contact' },
+  ];
+
   const isActive = (path) => {
     if (path === '/dashboard') {
       return (
-        location.pathname === '/' ||
         location.pathname === '/dashboard'
       );
     }
@@ -90,11 +113,11 @@ const Navbar = () => {
     : '/dashboard';
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" role="navigation" aria-label="Main Navigation">
       <div className="navbar-container">
 
         <Link
-          to={homePath}
+          to="/"
           className="navbar-logo"
           aria-label="Med-X Home"
         >
@@ -105,9 +128,24 @@ const Navbar = () => {
           />
         </Link>
 
+        {/* Center Navigation: Landing Page Sections OR Authenticated Workspace Links */}
         <div className="navbar-links">
 
-          {isAuthenticated &&
+          {isLandingPage ? (
+            <div className="landing-nav-links" role="menubar">
+              {landingNavItems.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className="landing-nav-link"
+                  onClick={() => scrollToLandingSection(item.id)}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          ) : (
+            isAuthenticated &&
             navigationLinks.map((link) => (
               <Link
                 key={link.path}
@@ -118,11 +156,22 @@ const Navbar = () => {
               >
                 {link.label}
               </Link>
-            ))}
+            ))
+          )}
 
           {isAuthenticated ? (
 
             <div className="user-menu">
+
+              {isLandingPage && (
+                <Link
+                  to={homePath}
+                  className="btn btn-outline btn-sm"
+                  style={{ marginRight: '6px' }}
+                >
+                  {professionalWorkspace ? 'Workspace' : 'Dashboard'}
+                </Link>
+              )}
 
               <div className="dropdown">
 
@@ -207,11 +256,66 @@ const Navbar = () => {
 
           )}
 
+          {/* Mobile Menu Toggle for Landing Page */}
+          {isLandingPage && (
+            <button
+              type="button"
+              className="mobile-menu-toggle"
+              onClick={() => setShowMobileMenu((prev) => !prev)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={showMobileMenu}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                {showMobileMenu ? (
+                  <path d="M18 6L6 18M6 6l12 12"></path>
+                ) : (
+                  <path d="M3 12h18M3 6h18M3 18h18"></path>
+                )}
+              </svg>
+            </button>
+          )}
+
         </div>
 
       </div>
+
+      {/* Mobile Drawer Menu for Landing Page */}
+      {isLandingPage && showMobileMenu && (
+        <div className="landing-mobile-menu">
+          {landingNavItems.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => scrollToLandingSection(item.id)}
+            >
+              {item.label}
+            </button>
+          ))}
+          {!isAuthenticated && (
+            <div style={{ display: 'flex', gap: '10px', marginTop: '8px' }}>
+              <Link
+                to="/login"
+                className="btn btn-outline btn-sm"
+                onClick={() => setShowMobileMenu(false)}
+                style={{ flex: 1 }}
+              >
+                Sign in
+              </Link>
+              <Link
+                to="/register"
+                className="btn btn-primary btn-sm"
+                onClick={() => setShowMobileMenu(false)}
+                style={{ flex: 1 }}
+              >
+                Create account
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
     </nav>
   );
 };
 
 export default Navbar;
+
