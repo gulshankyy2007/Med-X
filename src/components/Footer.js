@@ -1,54 +1,53 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 
 const Footer = () => {
-  const { isOrganization, isAuthenticated } = useAuth();
-
   return (
     <footer className="footer">
       <div className="footer-content">
-        <div className="footer-section">
-          <h4>Jankoti.com</h4>
-          <p style={{ color: '#aaa', marginBottom: '15px' }}>
-            Connect with top employers and find your dream job. 
-            Our platform makes job hunting easy and efficient.
+        <div className="footer-section footer-brand">
+          <h4>Med-X</h4>
+          <span className="footer-product">Med-X</span>
+          <p>
+            An intelligent health information and monitoring platform designed
+            to help people understand and manage their health information.
           </p>
         </div>
-        
+
         <div className="footer-section">
-          <h4>For Job Seekers</h4>
-          <Link to="/">Browse Jobs</Link>
-          <Link to="/register">Create Account</Link>
+          <h4>Med-X</h4>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/health">My Health</Link>
+          <Link to="/reports">Reports</Link>
+          <Link to="/monitoring">Monitoring</Link>
+        </div>
+
+        <div className="footer-section">
+          <h4>Health</h4>
+          <Link to="/alerts">Alerts</Link>
+          <Link to="/medicines">Medicines</Link>
+          <Link to="/devices">Devices</Link>
+          <Link to="/ask-medx">Ask Med-X</Link>
+        </div>
+
+        <div className="footer-section">
+          <h4>Med-X</h4>
+          <Link to="/profile">Profile & Settings</Link>
           <Link to="/login">Sign In</Link>
-        </div>
-        
-        <div className="footer-section">
-          <h4>For Organizations</h4>
-          {isOrganization ? (
-            <>
-              <Link to="/post-job">Post Jobs</Link>
-              <Link to="/dashboard">Manage Applications</Link>
-            </>
-          ) : (
-            <>
-              {!isAuthenticated && <Link to="/register">Create Organization Account</Link>}
-              <Link to="/login">Organization Sign In</Link>
-            </>
-          )}
-        </div>
-        
-        <div className="footer-section">
-          <h4>Company</h4>
-          <Link to="/">About Us</Link>
-          <Link to="/">Contact</Link>
-          <Link to="/">Privacy Policy</Link>
-          <Link to="/">Terms of Service</Link>
+          <Link to="/register">Create Account</Link>
         </div>
       </div>
-      
+
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Jankoti.com. All rights reserved.</p>
+        <p>
+          © {new Date().getFullYear()} Med-X • Med-X. All rights reserved.
+        </p>
+
+        <div className="footer-legal">
+          <span>Privacy</span>
+          <span>Terms</span>
+          <span>Data & Consent</span>
+        </div>
       </div>
     </footer>
   );

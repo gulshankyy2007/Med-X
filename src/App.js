@@ -1,38 +1,50 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useSearchParams, useLocation } from 'react-router-dom';
-import { useAuth } from './context/AuthContext';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import AuthCallback from './pages/AuthCallback';
-import JobView from './pages/JobView';
-import PostJob from './pages/PostJob';
-import JobDetail from './pages/JobDetail';
-import Footer from './components/Footer';
+import React from "react";
+import Monitoring from "./features/monitoring/Monitoring";
+import Alerts from "./features/alerts/Alerts";
+import Medicines from "./features/medicines/Medicines";
+import Devices from "./features/devices/Devices";
+import AskMedX from "./features/ai/AskMedX";
+import Profile from "./features/profile/Profile";
+import ReportDetail from "./features/reports/ReportDetail";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 
-// Import all the new pages
-import FreelancingView from './pages/FreelancingView';
-import PostFreelancing from './pages/PostFreelancing';
-import FreelancingDetail from './pages/FreelancingDetail';
-import StartupView from './pages/StartupView';
-import PostStartup from './pages/PostStartup';
-import StartupDetail from './pages/StartupDetail';
-import PodcastView from './pages/PodcastView';
-import PostPodcast from './pages/PostPodcast';
-import PodcastDetail from './pages/PodcastDetail';
-import ClassifiedView from './pages/ClassifiedView';
-import PostClassified from './pages/PostClassified';
-import ClassifiedDetail from './pages/ClassifiedDetail';
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
-// Protected Route
-const ProtectedRoute = ({ children, requireOrganization = false, requireCandidate = false }) => {
-  const { isAuthenticated, isOrganization, isCandidate, loading } = useAuth();
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import AuthCallback from "./pages/AuthCallback";
+
+import Dashboard from "./features/dashboard/Dashboard";
+import Health from "./features/health/Health";
+import Reports from "./features/reports/Reports";
+import ProfessionalDashboard from "./features/professional/ProfessionalDashboard";
+import ProfessionalSection from "./features/professional/ProfessionalSection";
+const ProtectedRoute = ({ children }) => {
+  const {
+    isAuthenticated,
+    loading
+  } = useAuth();
+
   const location = useLocation();
 
   if (loading) {
     return (
-      <div className="loading" style={{ minHeight: '60vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div
+        className="loading"
+        style={{
+          minHeight: "60vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <div className="spinner"></div>
       </div>
     );
@@ -40,35 +52,23 @@ const ProtectedRoute = ({ children, requireOrganization = false, requireCandidat
 
   if (!isAuthenticated) {
     const redirectTo = `${location.pathname}${location.search}${location.hash}`;
-    if (redirectTo && redirectTo !== '/login') {
-      localStorage.setItem('postLoginRedirect', redirectTo);
+
+    if (redirectTo && redirectTo !== "/login") {
+      localStorage.setItem("postLoginRedirect", redirectTo);
     }
-    return <Navigate to={`/login?redirect=${encodeURIComponent(redirectTo)}`} replace />;
-  }
 
-  if (requireOrganization && !isOrganization) {
-    return <Navigate to="/" replace />;
-  }
-
-  if (requireCandidate && !isCandidate) {
-    return <Navigate to="/" replace />;
+    return (
+      <Navigate
+        to={`/login?redirect=${encodeURIComponent(redirectTo)}`}
+        replace
+      />
+    );
   }
 
   return children;
 };
 
-// Auth Callback Handler
 const AuthCallbackHandler = () => {
-  const [searchParams] = useSearchParams();
-  const { handleAuthCallback } = useAuth();
-
-  useEffect(() => {
-    const token = searchParams.get('token');
-    if (token) {
-      handleAuthCallback(token);
-    }
-  }, [searchParams, handleAuthCallback]);
-
   return <AuthCallback />;
 };
 
@@ -76,38 +76,170 @@ function App() {
   return (
     <div className="App">
       <Navbar />
+
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Public */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/auth/callback" element={<AuthCallbackHandler />} />
-          
-          {/* Public listing routes */}
-          <Route path="/jobs" element={<JobView />} />
-          <Route path="/post-job" element={<ProtectedRoute requireOrganization><PostJob /></ProtectedRoute>} />
-          <Route path="/jobs/:id" element={<ProtectedRoute><JobDetail /></ProtectedRoute>} />
-          
-          <Route path="/freelancing-view" element={<FreelancingView />} />
-          <Route path="/post-freelancing" element={<ProtectedRoute requireOrganization><PostFreelancing /></ProtectedRoute>} />
-          <Route path="/freelancing/:id" element={<ProtectedRoute><FreelancingDetail /></ProtectedRoute>} />
-          
-          <Route path="/startup-view" element={<StartupView />} />
-          <Route path="/post-startup" element={<ProtectedRoute requireOrganization><PostStartup /></ProtectedRoute>} />
-          <Route path="/startup/:id" element={<ProtectedRoute><StartupDetail /></ProtectedRoute>} />
-          
-          <Route path="/podcast-view" element={<PodcastView />} />
-          <Route path="/post-podcast" element={<ProtectedRoute requireOrganization><PostPodcast /></ProtectedRoute>} />
-          <Route path="/podcast/:id" element={<ProtectedRoute><PodcastDetail /></ProtectedRoute>} />
-          
-          <Route path="/classified-view" element={<ClassifiedView />} />
-          <Route path="/post-classified" element={<ProtectedRoute requireOrganization><PostClassified /></ProtectedRoute>} />
-          <Route path="/classified/:id" element={<ProtectedRoute><ClassifiedDetail /></ProtectedRoute>} />
 
-          <Route path="/my-jobs" element={<ProtectedRoute requireOrganization><JobView myJobsOnly={true} /></ProtectedRoute>} />
+          {/* Med-X */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/health"
+            element={
+              <ProtectedRoute>
+                <Health />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/reports"
+            element={
+              <ProtectedRoute>
+                <Reports />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/monitoring"
+            element={
+              <ProtectedRoute>
+                <Monitoring />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/alerts"
+            element={
+              <ProtectedRoute>
+                <Alerts />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/medicines"
+            element={
+              <ProtectedRoute>
+                <Medicines />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/devices"
+            element={
+              <ProtectedRoute>
+                <Devices />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/ask-medx"
+            element={
+              <ProtectedRoute>
+                <AskMedX />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/reports/:id"
+            element={
+              <ProtectedRoute>
+                <ReportDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/professional"
+            element={
+              <ProtectedRoute>
+                <ProfessionalDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/professional/patients"
+            element={
+              <ProtectedRoute>
+                <ProfessionalSection section="patients" />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/professional/reports"
+            element={
+              <ProtectedRoute>
+                <ProfessionalSection section="reports" />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/professional/monitoring"
+            element={
+              <ProtectedRoute>
+                <ProfessionalSection section="monitoring" />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/professional/alerts"
+            element={
+              <ProtectedRoute>
+                <ProfessionalSection section="alerts" />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/professional/ask-medx"
+            element={
+              <ProtectedRoute>
+                <ProfessionalSection section="ask" />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+
       <Footer />
     </div>
   );

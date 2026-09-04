@@ -1,4 +1,4 @@
-# Jankoti Auth Backend (Minimal)
+# Med-X Auth Backend (Minimal)
 
 This is a small Node/Express server that handles Google OAuth and issues a JWT used by the frontend.
 
